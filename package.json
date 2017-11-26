@@ -4,5 +4,11 @@
   "description": "Website for counting the number of visitors each day.",
   "main": "index.js",
   "author": "Anton Segerkvist",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "node ./source/app.js"
+  },
+  "dependencies": {
+    "koa": "^2.4.1"
+  }
 }
