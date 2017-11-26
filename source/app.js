@@ -4,8 +4,10 @@
  * Import dependecies.
  */
 
+const path = require('path')
 const Koa = require('koa')
 const mysql = require('mysql2/promise')
+const serve = require('koa-static-server')
 const config = require('./config')
 
 /**
@@ -79,8 +81,10 @@ const middleware = {
    * Serve the static website.
    */
 
-  async static (ctx, next) {
-  }
+  static: serve({
+    rootDir: path.resolve(__dirname, 'public'),
+    rootPath: '/'
+  })
 
 }
 
