@@ -1,0 +1,8 @@
+{
+  "name": "counter",
+  "version": "1.0.0",
+  "description": "Website for counting the number of visitors each day.",
+  "main": "index.js",
+  "author": "Anton Segerkvist",
+  "license": "MIT"
+}
