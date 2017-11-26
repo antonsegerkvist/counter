@@ -5,13 +5,20 @@
  */
 
 const Koa = require('koa')
+const mysql = require('mysql2/promise')
 const config = require('./config')
 
 /**
- * Create the app server.
+ * Create databse connection pool.
  */
 
-const app = new Koa()
+const pool = mysql.createPool({
+  connectionLimit: 10,
+  host: 'localhost',
+  user: 'example',
+  password: 'example',
+  database: 'db_counter'
+})
 
 /**
  * Define middleware.
@@ -33,10 +40,39 @@ const middleware = {
   },
 
   /**
+   * Database connection creator.
+   */
+
+  async database (ctx, next) {
+    try {
+      ctx.mysql = undefined
+      ctx.mysql = await pool.getConnection()
+      await next()
+      await ctx.mysql.release()
+      ctx.mysql = undefined
+    } catch (error) {
+      console.log('==> Error in database connection middleware.')
+      console.log('==> Error: ' + error)
+    } finally {
+      if (ctx.mysql !== undefined) {
+        ctx.mysql.release()
+        ctx.mysql = undefined
+      }
+    }
+  },
+
+  /**
    * Inform the server of the visitation.
    */
 
   async incrementor (ctx, next) {
+    try {
+      await ctx.mysql.query('INSERT INTO `t_counter` () VALUES ()')
+      await next()
+    } catch (error) {
+      console.log('==> Error in incrementor middleware.')
+      console.log('==> Error: ' + error)
+    }
   },
 
   /**
@@ -49,10 +85,17 @@ const middleware = {
 }
 
 /**
+ * Create the app server.
+ */
+
+const app = new Koa()
+
+/**
  * Use the middleware in the application server.
  */
 
 app.use(middleware.failsafe)
+app.use(middleware.database)
 app.use(middleware.incrementor)
 app.use(middleware.static)
 

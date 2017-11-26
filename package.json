@@ -9,6 +9,7 @@
     "dev": "node ./source/app.js"
   },
   "dependencies": {
-    "koa": "^2.4.1"
+    "koa": "^2.4.1",
+    "mysql2": "^1.5.1"
   }
 }
