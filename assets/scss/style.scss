@@ -1,0 +1,19 @@
+html, body {
+  background-color: #111;
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  display: block;
+  margin: 50px auto;
+  max-width: 900px;
+  text-align: center;
+}
+
+.container > h1 {
+  color: #eee;
+  font-family: helvetica;
+  font-size: 32px;
+}
