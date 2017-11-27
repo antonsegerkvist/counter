@@ -19,7 +19,7 @@ const webpackConfig = {
         loader: 'babel-loader'
       },
       {
-        test: /\.s(a|c)ss$/,
+        test: /(\.css$)|(\.s(a|c)ss)$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [

@@ -2,14 +2,16 @@ html, body {
   background-color: #111;
   display: inline-block;
   height: 100%;
+  position: relative;
   width: 100%;
 }
 
 .container {
   display: block;
-  margin: 50px auto;
+  margin: auto auto;
   max-width: 900px;
   text-align: center;
+  top: 50%;
 }
 
 .container > h1 {
