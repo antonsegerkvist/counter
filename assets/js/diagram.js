@@ -11,14 +11,12 @@ const data = {
     '6pm-9pm',
     '9am-12am'
   ],
-  datasets: [{
-    title: 'Some Data',
-    values: [25, 40, 30, 35, 8, 52, 17, -4]
-  },
-  {
-    title: 'Another Set',
-    values: [25, 50, -10, 15, 18, 32, 27, 14]
-  }]
+  datasets: [
+    {
+      title: 'The number of visitors this day.',
+      values: [25, 40, 30, 35, 8, 52, 17, 20]
+    }
+  ]
 }
 
 const chart = new Chart({
@@ -28,7 +26,7 @@ const chart = new Chart({
   type: 'bar', // or 'line', 'scatter', 'pie', 'percentage'
   height: 250,
 
-  colors: ['#7cd6fd', '#743ee2'],
+  colors: ['#7cd6fd'],
 
   format_tooltip_x: d => (d + '').toUpperCase(),
   format_tooltip_y: d => d + ' pts'
