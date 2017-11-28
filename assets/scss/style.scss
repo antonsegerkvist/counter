@@ -7,11 +7,16 @@ html, body {
 }
 
 .container {
-  display: block;
+  display: inline-block;
+  left: 50%;
   margin: auto auto;
   max-width: 900px;
+  position: absolute;
+  right: 50%;
   text-align: center;
   top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
 }
 
 .container > h1 {
