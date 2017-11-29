@@ -9,6 +9,7 @@ const Koa = require('koa')
 const mysql = require('mysql2/promise')
 const serve = require('koa-static-server')
 const config = require('./config')
+const api = require('./api')
 
 /**
  * Create databse connection pool.
@@ -78,6 +79,12 @@ const middleware = {
   },
 
   /**
+   * Endpoint for fetching visitation data.
+   */
+
+  api,
+
+  /**
    * Serve the static website.
    */
 
@@ -101,6 +108,7 @@ const app = new Koa()
 app.use(middleware.failsafe)
 app.use(middleware.database)
 app.use(middleware.incrementor)
+app.use(middleware.api)
 app.use(middleware.static)
 
 /**
