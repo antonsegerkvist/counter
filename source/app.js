@@ -65,6 +65,12 @@ const middleware = {
   },
 
   /**
+   * Endpoint for fetching visitation data.
+   */
+
+  api,
+
+  /**
    * Inform the server of the visitation.
    */
 
@@ -79,19 +85,20 @@ const middleware = {
   },
 
   /**
-   * Endpoint for fetching visitation data.
-   */
-
-  api,
-
-  /**
    * Serve the static website.
    */
 
-  static: serve({
-    rootDir: path.resolve(__dirname, 'public'),
-    rootPath: '/'
-  })
+  static: async (ctx, next) => {
+    try {
+      await serve({
+        rootDir: path.resolve(__dirname, 'public'),
+        rootPath: '/'
+      })(ctx, next)
+    } catch (error) {
+      console.log('==> Error in static middleware.')
+      console.log('==> Error' + error)
+    }
+  }
 
 }
 
@@ -107,8 +114,8 @@ const app = new Koa()
 
 app.use(middleware.failsafe)
 app.use(middleware.database)
-app.use(middleware.incrementor)
 app.use(middleware.api)
+app.use(middleware.incrementor)
 app.use(middleware.static)
 
 /**
