@@ -33,7 +33,13 @@ const api = async (ctx, next) => {
         [ result ] = await ctx.mysql.query(
           'SELECT DATE(`visitation_date`) AS date, COUNT(`visitation_date`) AS count ' +
           'FROM `t_counter` ' +
-          'GROUP BY DATE(`visitation_date`)'
+          'WHERE `visitation_date` >= ? ' +
+          'AND `visitation_date` <= ? ' +
+          'GROUP BY date',
+          [
+            lowerDate + ' 00:00:00',
+            higherDate + ' 23:59:59'
+          ]
         )
         ctx.status = 200 // Ok.
         ctx.body = result

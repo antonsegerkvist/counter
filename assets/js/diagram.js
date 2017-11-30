@@ -1,35 +1,50 @@
 import Chart from 'frappe-charts/dist/frappe-charts.min.esm'
+import axios from 'axios'
 
-const data = {
-  labels: [
-    '12am-3am',
-    '3am-6pm',
-    '6am-9am',
-    '9am-12am',
-    '12pm-3pm',
-    '3pm-6pm',
-    '6pm-9pm',
-    '9am-12am'
-  ],
-  datasets: [
-    {
-      title: 'The number of visitors this day.',
-      values: [25, 40, 30, 35, 8, 52, 17, 20]
-    }
-  ]
-}
+const currentDate = new Date()
+let aWeekAgo = new Date()
+aWeekAgo.setDate(currentDate.getDate() - 7)
 
-const chart = new Chart({
-  parent: '#chart', // or a DOM element
-  title: 'Number Of Visitors',
-  data: data,
-  type: 'bar', // or 'line', 'scatter', 'pie', 'percentage'
-  height: 250,
+const mm = aWeekAgo.getMonth() + 1
+const dd = aWeekAgo.getDate()
+const dayCorrectNotation = [
+  aWeekAgo.getFullYear(),
+  (mm > 9 ? '' : '0') + mm,
+  (dd > 9 ? '' : '0') + dd
+].join('-')
 
-  colors: ['#7cd6fd'],
+axios.get('visitors/get?low=' + dayCorrectNotation)
+.then(response => {
+  const data = {
+    labels: response.data.map(item => {
+      return item.date.match(/\d{4}-\d{1,2}-\d{1,2}/)[0]
+    }),
+    datasets: [
+      {
+        title: 'The number of visitors this day.',
+        values: response.data.map(item => {
+          return item.count
+        })
+      }
+    ]
+  }
 
-  format_tooltip_x: d => (d + '').toUpperCase(),
-  format_tooltip_y: d => d + ' pts'
+  const chart = new Chart({
+    parent: '#chart', // or a DOM element
+    title: 'Number Of Visitors',
+    data: data,
+    type: 'bar', // or 'line', 'scatter', 'pie', 'percentage'
+    height: 250,
+
+    colors: ['#7cd6fd'],
+
+    format_tooltip_x: d => (d + '').toUpperCase(),
+    format_tooltip_y: d => d + ' pts'
+  })
+
+  return chart
 })
-
-module.export = chart
+.catch(error => {
+  console.log('==> Error in communication with api.')
+  console.log('==> Error: ' + error)
+})

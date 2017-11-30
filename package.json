@@ -10,6 +10,7 @@
     "serve": "node ./source/app.js"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "frappe-charts": "^0.0.8",
     "koa": "^2.4.1",
     "koa-static-server": "^1.3.2",
